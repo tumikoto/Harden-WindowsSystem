@@ -21,9 +21,10 @@ New-NetFirewallRule -DisplayName 'Allow-RDP-Inbound' -Profile @('Domain', 'Priva
 New-NetFirewallRule -DisplayName 'Allow-HTTP-Inbound' -Profile @('Domain', 'Private', 'Public') -Direction Inbound -Action Allow -Protocol 'TCP' -LocalPort '80'
 New-NetFirewallRule -DisplayName 'Allow-HTTPS-Inbound' -Profile @('Domain', 'Private', 'Public') -Direction Inbound -Action Allow -Protocol 'TCP' -LocalPort '443'
 
-# Harden SMB: Uninstall SMBv1, disable SMBv2 server, and disable SMBv3 compression
+# Harden SMB: Uninstall and disable SMBv1, enable SMBv2 and SMBv3, and disable SMB compression
 Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol
-Set-SmbServerConfiguration -EnableSMB2Protocol $false -Confirm:$false
+Set-SmbServerConfiguration -EnableSMB1Protocol $false -Confirm:$false
+Set-SmbServerConfiguration -EnableSMB2Protocol $true -Confirm:$false
 Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters -Name DisableCompression -Value 1 -Type DWORD -Force:$true
 
 # Harden RDP: enable, require NLA, configure crypto, assuming you will manually set up 2FA right?
