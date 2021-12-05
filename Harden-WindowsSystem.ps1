@@ -1,4 +1,11 @@
-# A quick script I pieced together from a few sources to do a bit of hardening on some of my Windows systems
+# A quick script I pieced together from a few sources to do a bit of hardening on some of my Windows systems:
+# OS hardening
+# Firewall config
+# SMB hardening
+# RDP hardening
+# SChannel hardening
+# Defender hardening
+# Office hardening
 
 # Harden OS: enable DEP, enable ASLR, enable SEHOP, disable DNS multicast, disable NetBIOS, protect LSASS process, disable WDigest
 Set-Processmitigation -System -Enable DEP,BottomUp,SEHOP
