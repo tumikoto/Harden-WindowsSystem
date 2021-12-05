@@ -99,12 +99,35 @@ $DotNetRegPath = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319"
 New-ItemProperty -path $DotNetRegPath -name 'SystemDefaultTlsVersions' -value 1 -PropertyType DWORD
 New-ItemProperty -path $DotNetRegPath -name 'SchUseStrongCrypto' -value 1 -PropertyType DWORD
 $DotNetRegPath64 = "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319"
-New-ItemProperty -path $DotNetRegPath64 -name 'SystemDefaultTlsVersions' -value 1 -PropertyType DWORD
-New-ItemProperty -path $DotNetRegPath64 -name 'SchUseStrongCrypto' -value 1 -PropertyType DWORD
+New-ItemProperty -path $DotNetRegPath64 -name 'SystemDefaultTlsVersions' -value 1 -Force
+New-ItemProperty -path $DotNetRegPath64 -name 'SchUseStrongCrypto' -value 1 -Force
 
-# Harden Defender: reset, enable sandbox, enable ASR rules
+# Harden Defender: reset, enable sandbox, enable RTP, enable BM, enable IPS, enable protocol parsing, disable cloud/spynet, enable SmartScreen, enable ASR rules
 & $env:programfiles\"Windows Defender"\MpCmdRun.exe -RestoreDefaults
 setx /M MP_FORCE_USE_SANDBOX 1
+Set-MpPreference -DisableRealtimeMonitoring $false
+Set-MpPreference -MAPSReporting Disabled
+Set-MpPreference -SubmitSamplesConsent NeverSend
+Set-MpPreference -DisableBehaviorMonitoring $false
+Set-MpPreference -DisableScriptScanning $false
+Set-MpPreference -DisableArchiveScanning $false
+Set-MpPreference -DisableRemovableDriveScanning $false
+Set-MpPreference -DisableIntrusionPreventionSystem $false
+Set-MpPreference -DisableIOAVProtection $false
+Set-MpPreference -DisableTlsParsing $false
+Set-MpPreference -DisableHttpParsing $false
+Set-MpPreference -DisableDnsParsing $false
+Set-MpPreference -DisableDatagramProcessing $false
+Set-MpPreference -DisableDnsOverTcpParsing $false
+Set-MpPreference -DisableRdpParsing $false
+Set-MpPreference -DisableSshParsing $false
+New-Item "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name SpynetReporting -Value 0 -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name SubmitSamplesConsent  -Value 2 -Force
+New-Item "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge" -Force
+New-Item "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" -Force
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" -Name "EnabledV9" -Value 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableSmartScreen" -Type DWord -Value 1
 # Block Office Child Process Creation 
 Add-MpPreference -AttackSurfaceReductionRules_Ids 'D4F940AB-401B-4EFC-AADC-AD5F3C50688A' -AttackSurfaceReductionRules_Actions Enabled
 # Block Process Injection
