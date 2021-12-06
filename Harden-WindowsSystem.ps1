@@ -1,6 +1,6 @@
 # A quick script I pieced together from a few sources to do a bit of hardening on some of my Windows systems:
 # OS hardening
-# Firewall config
+# Firewall hardening
 # SMB hardening
 # RDP hardening
 # SChannel hardening
@@ -10,14 +10,15 @@
 # Harden OS: enable DEP, enable ASLR, enable SEHOP, disable DNS multicast, disable NetBIOS, protect LSASS process, disable WDigest
 Set-Processmitigation -System -Enable DEP,BottomUp,SEHOP
 New-Item "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Force
-Set-ItemProperty -Path  "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name EnableMulticast -Value 1 -Force
+Set-ItemProperty -Path  "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name EnableMulticast -Value 0 -Force
 wmic /interactive:off nicconfig where TcpipNetbiosOptions=1 call SetTcpipNetbios 2
 New-Item "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\LSASS.exe" -Force
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\LSASS.exe" -Name AuditLevel -Value 8 -Force
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name RunAsPPL -Value 00000001 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name RunAsPPL -Value 1 -Force
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest" -Name UseLogonCredential -value 0 -Force
 
-# Basic Firewall: enable all profiles, disable all default rules, allow all outbound traffic, deny all inbound traffic except the essentials (ICMP, SMB, RDP, HTTP/S, etc)
+# Harden Firewall: enable all profiles, disable all default rules, allow all outbound traffic, deny all inbound traffic except the essentials (ICMP, SMB, RDP, HTTP/S, etc)
+# Actually a pretty basic config but better than running no host based firewall like most folks
 Set-NetFirewallProfile -Profile @('Domain', 'Private', 'Public') -Enabled True
 Get-NetFirewallRule -Name * | Disable-NetFirewallRule
 Set-NetFirewallProfile –Name @('Domain', 'Private', 'Public') –DefaultOutboundAction Allow
@@ -102,12 +103,12 @@ Disable-TlsCipherSuite -Name "TLS_PSK_WITH_AES_256_CBC_SHA384"
 Disable-TlsCipherSuite -Name "TLS_PSK_WITH_AES_128_CBC_SHA256"
 Disable-TlsCipherSuite -Name "TLS_PSK_WITH_NULL_SHA384"
 Disable-TlsCipherSuite -Name "TLS_PSK_WITH_NULL_SHA256"
-$DotNetRegPath = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319"
-New-ItemProperty -path $DotNetRegPath -name 'SystemDefaultTlsVersions' -value 1 -PropertyType DWORD
-New-ItemProperty -path $DotNetRegPath -name 'SchUseStrongCrypto' -value 1 -PropertyType DWORD
-$DotNetRegPath64 = "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319"
-New-ItemProperty -path $DotNetRegPath64 -name 'SystemDefaultTlsVersions' -value 1 -Force
-New-ItemProperty -path $DotNetRegPath64 -name 'SchUseStrongCrypto' -value 1 -Force
+$DotNetRegPath64 = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319"
+New-ItemProperty -path $DotNetRegPath64 -name 'SystemDefaultTlsVersions' -value 1 -PropertyType DWORD
+New-ItemProperty -path $DotNetRegPath64 -name 'SchUseStrongCrypto' -value 1 -PropertyType DWORD
+$DotNetRegPath32 = "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319"
+New-ItemProperty -path $DotNetRegPath32 -name 'SystemDefaultTlsVersions' -value 1 -Force
+New-ItemProperty -path $DotNetRegPath32 -name 'SchUseStrongCrypto' -value 1 -Force
 
 # Harden Defender: reset, enable sandbox, enable RTP, enable BM, enable IPS, enable protocol parsing, disable cloud/spynet, enable SmartScreen, enable ASR rules
 & $env:programfiles\"Windows Defender"\MpCmdRun.exe -RestoreDefaults
