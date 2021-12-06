@@ -9,6 +9,7 @@
 
 # Harden OS: enable DEP, enable ASLR, enable SEHOP, disable DNS multicast, disable NetBIOS, protect LSASS process, disable WDigest
 # Assuming you are going to set up BitLocker and EFS manually right?
+# Not messing with your UAC, change it if you want
 Set-Processmitigation -System -Enable DEP,BottomUp,SEHOP
 New-Item "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Force
 Set-ItemProperty -Path  "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name EnableMulticast -Value 0 -Force
@@ -112,6 +113,7 @@ New-ItemProperty -path $DotNetRegPath32 -name 'SystemDefaultTlsVersions' -value 
 New-ItemProperty -path $DotNetRegPath32 -name 'SchUseStrongCrypto' -value 1 -Force
 
 # Harden Defender: reset, enable sandbox, enable RTP, enable BM, enable IPS, enable protocol parsing, disable cloud/spynet, enable SmartScreen, enable ASR rules
+# You will lose all Defender customizations, RIP your excluded files/folders/processes
 & $env:programfiles\"Windows Defender"\MpCmdRun.exe -RestoreDefaults
 setx /M MP_FORCE_USE_SANDBOX 1
 Set-MpPreference -DisableRealtimeMonitoring $false
