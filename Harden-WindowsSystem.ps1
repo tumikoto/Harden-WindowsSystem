@@ -8,6 +8,7 @@
 # Office hardening
 
 # Harden OS: enable DEP, enable ASLR, enable SEHOP, disable DNS multicast, disable NetBIOS, protect LSASS process, disable WDigest
+# Assuming you are going to set up BitLocker and EFS manually right?
 Set-Processmitigation -System -Enable DEP,BottomUp,SEHOP
 New-Item "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Force
 Set-ItemProperty -Path  "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name EnableMulticast -Value 0 -Force
@@ -186,3 +187,4 @@ Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Excel\Secu
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\PowerPoint\Security" -Name blockcontentexecutionfrominternet -Value 1 -Force
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Word\Security" -Name vbawarnings -Value 4 -Force
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Publisher\Security" -Name vbawarnings -Value 4 -Force
+
