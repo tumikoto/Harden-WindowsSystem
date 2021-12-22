@@ -48,9 +48,9 @@ $SChannelRegPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCH
 New-Item $SChannelRegPath"\TLS 1.3\Server" -Force
 New-Item $SChannelRegPath"\TLS 1.3\Client" -Force
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Server" -Name Enabled -Value 1 -PropertyType DWORD
-New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Server" -Name DisabledByDefault -Value 0 -PropertyType DWORD
+New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Server" -Name DisabledByDefault -Value 1 -PropertyType DWORD
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Client" -Name Enabled -Value 1 -PropertyType DWORD
-New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Client" -Name DisabledByDefault -Value 0 -PropertyType DWORD
+New-ItemProperty -Path $SChannelRegPath"\TLS 1.3\Client" -Name DisabledByDefault -Value 1 -PropertyType DWORD
 New-Item $SChannelRegPath"\TLS 1.2\Server" -Force
 New-Item $SChannelRegPath"\TLS 1.2\Client" -Force
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.2\Server" -Name Enabled -Value 1 -PropertyType DWORD
@@ -60,9 +60,9 @@ New-ItemProperty -Path $SChannelRegPath"\TLS 1.2\Client" -Name DisabledByDefault
 New-Item $SChannelRegPath"\TLS 1.1\Server" -Force
 New-Item $SChannelRegPath"\TLS 1.1\Client" -Force
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Server" -Name Enabled -Value 1 -PropertyType DWORD
-New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Server" -Name DisabledByDefault -Value 0 -PropertyType DWORD
+New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Server" -Name DisabledByDefault -Value 1 -PropertyType DWORD
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Client" -Name Enabled -Value 1 -PropertyType DWORD
-New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Client" -Name DisabledByDefault -Value 0 -PropertyType DWORD
+New-ItemProperty -Path $SChannelRegPath"\TLS 1.1\Client" -Name DisabledByDefault -Value 1 -PropertyType DWORD
 New-Item $SChannelRegPath"\TLS 1.0\Server" -Force
 New-Item $SChannelRegPath"\TLS 1.0\Client" -Force
 New-ItemProperty -Path $SChannelRegPath"\TLS 1.0\Server" -Name Enabled -Value 0 -PropertyType DWORD
