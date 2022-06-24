@@ -167,6 +167,28 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids 'd1e49aac-8f56-4280-b9ba-993a6
 Add-MpPreference -AttackSurfaceReductionRules_Ids '01443614-cd74-433a-b99e-2ecdc07bfc25' -AttackSurfaceReductionRules_Actions Enabled
 
 # Harden Office: disable macros, enable Protected mode, disable DDE
+New-Item -Path "HKCU:\Software\Microsoft\Office\14.0\Word\Options" -Force
+New-Item -Path "HKCU:\Software\Microsoft\Office\14.0\Word\Options\WordMail" -Force
+New-Item -Path "HKCU:\Software\Microsoft\Office\15.0\Word\Options" -Force
+New-Item -Path "HKCU:\Software\Microsoft\Office\15.0\Word\Options\WordMail" -Force
+New-Item -Path "HKCU:\Software\Microsoft\Office\16.0\Word\Options" -Force
+New-Item -Path "HKCU:\Software\Microsoft\Office\16.0\Word\Options\WordMail" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\12.0\Publisher\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\12.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\14.0\Publisher\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\14.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\Outlook\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\Excel\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\PowerPoint\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\15.0\Publisher\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Outlook\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Excel\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\PowerPoint\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Word\Security" -Force
+New-Item -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Publisher\Security" -Force
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Office\14.0\Word\Options" -Name DontUpdateLinks -Value 1 -Force
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Office\14.0\Word\Options\WordMail" -Name DontUpdateLinks -Value 1 -Force
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Office\15.0\Word\Options" -Name DontUpdateLinks -Value 1 -Force
@@ -189,4 +211,3 @@ Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Excel\Secu
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\PowerPoint\Security" -Name blockcontentexecutionfrominternet -Value 1 -Force
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Word\Security" -Name vbawarnings -Value 4 -Force
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Office\16.0\Publisher\Security" -Name vbawarnings -Value 4 -Force
-
